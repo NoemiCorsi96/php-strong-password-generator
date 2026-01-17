@@ -15,4 +15,6 @@ Invece di visualizzare la password generata nella stessa pagina (index.php), eff
 dedicata proprio a mostrare il risultato. ok
 Questa pagina riceverà la password che era stata generata tramite sessione e la mostrerà all’utente. ok 
 Milestone 4 (BONUS)
-Gestire ulteriori parametri nel form per le password, dando la possibilità all’utente di specificare quali set di caratteri possono essere ammessi nella password da generare, tra lettere maiuscole, lettere minuscole, numeri e simboli.
+Gestire ulteriori parametri nel form per le password, dando la possibilità all’utente di specificare quali
+ set di caratteri possono essere ammessi nella password da generare, tra lettere maiuscole,
+lettere minuscole, numeri e simboli.ok

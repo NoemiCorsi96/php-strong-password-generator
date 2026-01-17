@@ -2,18 +2,33 @@
 session_start();
 require_once 'functions.php';
 $password=null;
+$message = null;
+
 //funzione che genera la password
+$useLower = isset($_GET['lower']);
+$useUpper = isset($_GET['upper']);
+$useNumbers = isset($_GET['numbers']);
+$useSymbols = isset($_GET['symbols']);
 
 $length=null; 
 if (isset($_GET['length'])) {
-   $length=(int)$_GET['length'];
-   if ($length >= 1 && $length <= 10) {
-     $password = generatePassword($length);
+  $length = (int) $_GET['length'];
 
-    $_SESSION['password'] = $password;
+  $useLower = isset($_GET['lower']);
+  $useUpper = isset($_GET['upper']);
+  $useNumbers = isset($_GET['numbers']);
+  $useSymbols = isset($_GET['symbols']);
 
-    header('Location: result.php');
-    exit;
+  if ($length >= 1 && $length <= 10) {
+    $password = generatePassword($length, $useLower, $useUpper, $useNumbers, $useSymbols);
+
+    if ($password === null) {
+      $message = "Seleziona almeno un tipo di carattere.";
+    } else {
+      $_SESSION['password'] = $password;
+      header('Location: result.php');
+      exit;
+    }
   }
 }
 ?>
@@ -29,7 +44,9 @@ if (isset($_GET['length'])) {
 <body class="bg-light p-5">
     <div class="container py-5" >
         <h1 class="text-center mb-4">Strong Password Generator</h1>
-
+        <?php if ($message !== null) { ?>
+        <div class="alert alert-warning"><?php echo $message; ?></div>
+        <?php } ?>
         <div class="card shadow-sm mb-3">
             <div class="card-body">
                 <h2 class="h5 mb-3">Genera una password sicura</h2>
@@ -37,6 +54,28 @@ if (isset($_GET['length'])) {
                     <div class="col-12 col-md-6">
                         <label for="length"> Lunghezza password:</label>
                         <input type="number" id="length" name="length" min="1" max="10" class="form-control" required>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="lower" name="lower" value="1" checked>
+                                <label class="form-check-label" for="lower">Lettere minuscole</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="upper" name="upper" value="1" checked>
+                                <label class="form-check-label" for="upper">Lettere maiuscole</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="numbers" name="numbers" value="1" checked>
+                                <label class="form-check-label" for="numbers">Numeri</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="symbols" name="symbols" value="1">
+                                <label class="form-check-label" for="symbols">Simboli</label>
+                            </div>
+                        </div>
+
                         <div class="col-12 col-md-6 d-flex gap-2 mt-3">
                             <button type="submit" class="btn btn-primary">Genera password</button>
                             <a href="index.php" class="btn btn-outline-secondary">Annulla</a>
